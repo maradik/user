@@ -6,7 +6,7 @@
      * There is all general includes, constants and some information. 
      */
      
-     require_once 'inc/UserData.php';
-     require_once 'inc/UserRepository.php';
-     require_once 'inc/UserCurrent.php';     
+     require_once __DIR__.'/inc/UserData.php';
+     require_once __DIR__.'/inc/UserRepository.php';
+     require_once __DIR__.'/inc/UserCurrent.php';     
 ?>

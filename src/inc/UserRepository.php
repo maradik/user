@@ -48,7 +48,7 @@ namespace Antools {
             $res = $this->db->query("select 'x' from {$this->userTableName()} limit 1");
             
             if ($res === false) {            
-                $sql = file_get_contents(UserRepository::FILENAME_INITTABLES, true);
+                $sql = file_get_contents(__DIR__.'/'.UserRepository::FILENAME_INITTABLES, true);
                 $sql = str_replace('%usertablename%', $this->userTableName(), $sql);
                 
                 if ($sql !== false && !empty($sql)) {                        

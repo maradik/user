@@ -1,5 +1,5 @@
 <?php
-    require_once "../src/User.php";        
+    require_once __DIR__."/../src/User.php";        
     
     use \Antools\UserData;
     use \Antools\UserCurrent;
