@@ -140,8 +140,10 @@ namespace Antools {
         /**
          * @return string Полное имя таблицы для хранения данных пользователей.
          */
-        protected function userTableName() {
-            return "{$this->tablePrefix}_{$this->userTable}";
+        protected function userTableName() {            
+            return empty($this->tablePrefix) ?
+                $this->userTable :
+                "{$this->tablePrefix}_{$this->userTable}";
         }
         
         /**
