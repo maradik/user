@@ -1,40 +1,70 @@
 <?php
     require_once __DIR__."/../src/User.php";    
     
-    use \Antools\UserData;
-    use \Antools\UserCurrent;
-    use \Antools\UserRepository;
+    use \Maradik\User\UserData;
+    use \Maradik\User\UserRoles;    
+    use \Maradik\User\UserCurrent;
+    use \Maradik\User\UserRepository;
+        
     
-    class UserDataTest extends PHPUnit_Framework_TestCase {
+    class UserDataTest extends PHPUnit_Framework_TestCase {                                   
+            
         function testInitialFields() {
             $userData = new UserData();
             $this->assertEquals(0, $userData->id);
+            $this->assertEquals(0, $userData->role);
         } 
-        
-        function testMake() {
-            $userData = new UserData();
-            $userData->id           = 10;    
-            $userData->login        = "user";
-            $userData->email        = "mail@mail.ru";
-            $userData->session      = "1233568909";
-            $userData->password     = "password";
-            $userData->role         = UserData::ROLE_USER;
-            $userData->loginDate    = time();             
-            $userData->createDate   = $userData->loginDate - 1;                        
-                        
-            $userData2 = UserData::make(
-                $userData->id,
-                $userData->login,
-                $userData->email,
-                $userData->session,
-                $userData->password,
-                $userData->role,               
-                $userData->createDate,
-                $userData->loginDate
+                      
+        function propProvider() {
+            return array(
+                    array(
+                        array(
+                            'id' => 10,
+                            'login' => 'testlogin',
+                            'email' => 'test@email.ru',
+                            'session' => '12345678901234567890132456789012',
+                            'password' => 'somepasswd',
+                            'role' => UserRoles::MODERATOR,
+                            'createDate' => time(),
+                            'loginDate' => time() + 1
+                    )                
+                )
             );
-            
-            $this->assertEquals($userData, $userData2);
-        }         
+        }                      
+                      
+        /**
+         * @dataProvider propProvider
+         */                   
+        function testInitialFieldsDefined(array $params) {
+
+            $userData = new UserData(
+                $params['id'],
+                $params['login'],
+                $params['email'],
+                $params['session'],
+                $params['password'],
+                $params['role'],
+                $params['createDate'],
+                $params['loginDate']
+            );                      
+                                         
+            foreach ($params as $key => $val) {                
+                $this->assertEquals($val, $userData->$key);                                       
+            }                     
+        }  
+        
+        /**
+         * @dataProvider propProvider
+         */            
+        function testGetSetProperties(array $params) {
+           
+            $userData = new UserData();
+            foreach ($params as $key => $val) {
+                $userData->$key = $val;   
+                $this->assertEquals($val, $userData->$key);                                       
+            }             
+                        
+        } 
     }          
    
 ?>

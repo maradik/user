@@ -1,42 +1,78 @@
 <?php
-namespace Antools {
+    namespace Maradik\User; 
     
     /**
      * Контейнер для данных пользователя
      */
-    class UserData {
-        const ROLE_USER = 0;
-        const ROLE_MODERATOR = 1;
-        const ROLE_ADMIN = 2;
-        
+    class UserData 
+    {        
+        /**
+         * @var int $id Идентификатор пользователя         
+         */
         public $id;    
+        
+        /**
+         * @var string $login Имя пользователя         
+         */        
         public $login;
-        public $email;
-        public $session;
-        public $password;
-        public $role;
-        public $createDate;
-        public $loginDate;      
-        
-        function __construct() {
-            $this->id = 0;
-            $this->role = 0;
-        }            
-        
-        static function make($id, $login, $email, $session, $password, $role, $createDate, $loginDate) {
-            $userData = new UserData();
-            $userData->id           = $id;    
-            $userData->login        = $login;
-            $userData->email        = $email;
-            $userData->session      = $session;
-            $userData->password     = $password;
-            $userData->role         = $role;
-            $userData->createDate   = $createDate;
-            $userData->loginDate    = $loginDate;       
-            
-            return $userData;        
-        }                              
-    }
 
-}
-?>
+        /**
+         * @var string $email Email         
+         */      
+        public $email;
+        
+        /**
+         * @var string $session Идентификатор сессии         
+         */              
+        public $session;
+        
+        /**
+         * @var string $password Пароль         
+         */              
+        public $password;
+        
+        /**
+         * @var int $role Роль пользователя         
+         */              
+        public $role;
+        
+        /**
+         * @var int $createDate Дата создания         
+         */              
+        public $createDate;
+        
+        /**
+         * @var int $loginDate Дата последнего входа         
+         */              
+        public $loginDate;                
+                        
+        /**
+         * @param int $id
+         * @param string $login
+         * @param string $email
+         * @param string $session
+         * @param string $password
+         * @param int $role
+         * @param int $createDate
+         * @param int $loginDate
+         */                        
+        public function __construct(
+            $id         = 0, 
+            $login      = "", 
+            $email      = "", 
+            $session    = "", 
+            $password   = "", 
+            $role       = 0, 
+            $createDate = null, 
+            $loginDate  = null
+        ) {
+            $this->id           = $id;    
+            $this->login        = $login;
+            $this->email        = $email;
+            $this->session      = $session;
+            $this->password     = $password;
+            $this->role         = $role;
+            $this->createDate   = $createDate;
+            $this->loginDate    = $loginDate;               
+        }                                                            
+    }
