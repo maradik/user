@@ -1,5 +1,8 @@
 <?php
-    require_once __DIR__."/../src/User.php";        
+    require_once __DIR__.'/../src/UserData.php';
+    require_once __DIR__.'/../src/UserRepository.php';
+    require_once __DIR__.'/../src/UserCurrent.php';
+    require_once __DIR__.'/../src/UserRoles.php';        
     
     use \Maradik\User\UserData;
     use \Maradik\User\UserRoles;
