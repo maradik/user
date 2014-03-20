@@ -13,9 +13,7 @@
         const FIELD_EMAIL = "email";                  
         
         const ERROR_TEXT_DB = "Операция с БД вызвала ошибку!";
-        
-        const FILENAME_INITTABLES = '../queries/userrepository_init.sql';
-        
+               
         /**
          * @var \PDO $db
          */
