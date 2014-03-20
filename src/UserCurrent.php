@@ -201,7 +201,7 @@
          */
         protected function generateSessionId() 
         {
-            return openssl_random_pseudo_bytes(UserCurrent::SESSID_LENGTH);
+            return base64_encode(openssl_random_pseudo_bytes(UserCurrent::SESSID_LENGTH/3*2));
         }     
         
         /**

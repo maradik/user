@@ -255,7 +255,8 @@
                 $data['role'],
                 $data['createdate'],
                 $data['logindate']   
-            );                             
+            );    
+            return $userData;                        
         } 
     }
 
