@@ -71,7 +71,7 @@
                           UNIQUE KEY `login` (`login`),
                           UNIQUE KEY `session` (`session`),
                           UNIQUE KEY `email` (`email`)
-                        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32;";              
+                        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32;";              
                      
                 $res = $this->db->query($sql);   
                 
