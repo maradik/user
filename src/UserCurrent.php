@@ -62,11 +62,12 @@
          */                
         public function init($_restoreSession = true) 
         {
+            $sessionId = !empty($_COOKIE[UserCurrent::SESSION_COOKIE]) ? $_COOKIE[UserCurrent::SESSION_COOKIE] : "";
             $this->errorCode = UserCurrent::ERROR_NONE;
             $this->userData = null;                  
                                          
-            if ($_restoreSession && !empty($_COOKIE[UserCurrent::SESSION_COOKIE])) {            
-                $userData = $this->db->getBySession($_COOKIE[UserCurrent::SESSION_COOKIE]);           
+            if ($_restoreSession && !empty($sessionId)) {            
+                $userData = $this->db->getBySession($sessionId);           
                 if (!empty($userData->id) &&  $userData->loginDate >= time() - UserCurrent::SESSION_LIVETIME) {
                     $this->userData = $userData;                                        
                 }                    
@@ -74,7 +75,7 @@
             
             if (empty($this->userData)) {                
                 $this->userData = new UserData();                            
-                $this->userData->session = $this->generateSessionId();                                     
+                $this->userData->session = !empty($sessionId) ? $sessionId : $this->generateSessionId();                                     
             }      
             $this->setSessionCookie();                                                                                                                                           
         }
