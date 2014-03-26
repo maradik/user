@@ -56,12 +56,7 @@
             $this->livetime = $livetime;      
             $this->errorCode = UserCurrent::ERROR_NONE;                      
         }
-        
-        public function __destruct() 
-        {
-            setcookie(UserCurrent::SESSION_COOKIE, $this->userData->session, time() + $this->livetime, "/");  
-        }
-                
+                       
         /**
          * @param boolean $_restoreSession Восстановить данные пользователя по идентификатору сессии?
          */                
@@ -80,7 +75,8 @@
             if (empty($this->userData)) {                
                 $this->userData = new UserData();                            
                 $this->userData->session = $this->generateSessionId();                                     
-            }                                                                                                                                                 
+            }      
+            $this->setSessionCookie();                                                                                                                                           
         }
                 
         /**
@@ -98,7 +94,8 @@
             if (!empty($userData->id) && $userData->password == $this->encryptPassword($password)) {
                 $this->userData = $userData;      
                 $this->userData->loginDate = time();                              
-                $this->db->update($this->userData);                                
+                $this->db->update($this->userData);     
+                $this->setSessionCookie();                           
                 return true;
             }
             
@@ -136,6 +133,7 @@
                 if ($this->db->insert($userData)) {
                     $this->userData = $this->db->getByLogin($userData->login);
                     $this->errorCode = UserCurrent::ERROR_NONE;
+                    $this->setSessionCookie();
                     return true;
                 } else {
                     $this->errorCode = UserCurrent::ERROR_DB;
@@ -192,6 +190,11 @@
                     return "Ошибка базы данных!";                                            
             }
             return "";
+        }
+        
+        protected function setSessionCookie()
+        {
+            setcookie(UserCurrent::SESSION_COOKIE, $this->userData->session, time() + $this->livetime, "/");
         }
         
         /**
