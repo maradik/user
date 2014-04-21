@@ -58,15 +58,15 @@
         }
                        
         /**
-         * @param boolean $_restoreSession Восстановить данные пользователя по идентификатору сессии?
+         * @param boolean $_resetSession Начать новую сессию
          */                
-        public function init($_restoreSession = true) 
+        public function init($_resetSession = false) 
         {
-            $sessionId = !empty($_COOKIE[UserCurrent::SESSION_COOKIE]) ? $_COOKIE[UserCurrent::SESSION_COOKIE] : "";
+            $sessionId = !empty($_COOKIE[UserCurrent::SESSION_COOKIE]) ? $_COOKIE[UserCurrent::SESSION_COOKIE] : '';
             $this->errorCode = UserCurrent::ERROR_NONE;
             $this->userData = null;                  
                                          
-            if ($_restoreSession && !empty($sessionId)) {            
+            if (!$_resetSession && !empty($sessionId)) {            
                 $userData = $this->db->getBySession($sessionId);           
                 if (!empty($userData->id) &&  $userData->loginDate >= time() - UserCurrent::SESSION_LIVETIME) {
                     $this->userData = $userData;                                        
@@ -75,7 +75,7 @@
             
             if (empty($this->userData)) {                
                 $this->userData = new UserData();                            
-                $this->userData->session = !empty($sessionId) ? $sessionId : $this->generateSessionId();                                     
+                $this->userData->session = !$_resetSession && $sessionId ? $sessionId : $this->generateSessionId();                                     
             }      
             $this->setSessionCookie();                                                                                                                                           
         }
