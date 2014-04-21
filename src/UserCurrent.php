@@ -115,7 +115,7 @@
                 $this->db->update($this->userData); 
             }           
             
-            $this->init(false);            
+            $this->init(true);            
         }
         
         /**
