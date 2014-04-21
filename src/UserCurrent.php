@@ -94,7 +94,10 @@
             
             if (!empty($userData->id) && $userData->password == $this->encryptPassword($password)) {
                 $this->userData = $userData;      
-                $this->userData->loginDate = time();                              
+                if (empty($this->userData->session)) {
+                    $this->userData->session = $this->generateSessionId();
+                }
+                $this->userData->loginDate = time();      
                 $this->db->update($this->userData);     
                 $this->setSessionCookie();                           
                 return true;
