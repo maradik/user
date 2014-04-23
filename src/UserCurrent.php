@@ -14,7 +14,8 @@
         const ERROR_NONE = 0;                        
         const ERROR_GENERAL = 1;
         const ERROR_USER_ALREADY_EXIST = 2;
-        const ERROR_DB = 3;                               
+        const ERROR_DB = 3;      
+        const ERROR_REQUIRED_FIELD = 4;                         
                         
         /**
          * @var UserData $userData
@@ -127,24 +128,28 @@
          * @return boolean Если регистрация успешно прошла - возвращает true.
          */
         public function register(UserData $userData) {
-            $userData->password = $this->encryptPassword($userData->password);
-            $userData->session  = $this->userData->session;
-            $userData->createDate = time();
-            $userData->loginDate = $userData->createDate;  
-            if (empty($this->db->getByLogin($userData->login)->id) &&
-                empty($this->db->getByEmail($userData->email)->id)) {
-                    
-                if ($this->db->insert($userData)) {
-                    $this->userData = $this->db->getByLogin($userData->login);
-                    $this->errorCode = UserCurrent::ERROR_NONE;
-                    $this->setSessionCookie();
-                    return true;
+            if (!empty($userData->login) && !empty($userData->password)) {            
+                $userData->password = $this->encryptPassword($userData->password);
+                $userData->session  = $this->userData->session;
+                $userData->createDate = time();
+                $userData->loginDate = $userData->createDate;  
+                if (empty($this->db->getByLogin($userData->login)->id) &&
+                    empty($this->db->getByEmail($userData->email)->id)) {
+                        
+                    if ($this->db->insert($userData)) {
+                        $this->userData = $this->db->getByLogin($userData->login);
+                        $this->errorCode = UserCurrent::ERROR_NONE;
+                        $this->setSessionCookie();
+                        return true;
+                    } else {
+                        $this->errorCode = UserCurrent::ERROR_DB;
+                    }
                 } else {
-                    $this->errorCode = UserCurrent::ERROR_DB;
-                }
+                    $this->errorCode = UserCurrent::ERROR_USER_ALREADY_EXIST;
+                }      
             } else {
-                $this->errorCode = UserCurrent::ERROR_USER_ALREADY_EXIST;
-            }                
+                $this->errorCode = UserCurrent::ERROR_REQUIRED_FIELD;
+            }          
             return false;                
         }
         
@@ -192,6 +197,8 @@
                     return "Пользователь с таким именем или почтой уже существует!";
                 case (UserCurrent::ERROR_DB) :
                     return "Ошибка базы данных!";                                            
+                case (UserCurrent::ERROR_REQUIRED_FIELD) :
+                    return "Заполните все обязательные поля!";
             }
             return "";
         }
