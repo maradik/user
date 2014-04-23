@@ -226,6 +226,6 @@
          */         
         protected function encryptPassword($password) 
         {
-            return md5(md5($this->encryptSalt.trim($password)));
+            return md5(md5(trim($password).$this->encryptSalt));
         }         
     }    
