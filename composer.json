@@ -20,5 +20,16 @@
     "autoload": {
         "psr-4": { "Maradik\\User\\": "src/" },
         "classmap": [ "src/" ]
+    },
+    
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Respect/Validation"
+        }        
+	],    
+	
+	"require": {
+        "respect/validation": "0.*"
     }
 }

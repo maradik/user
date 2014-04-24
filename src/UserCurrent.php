@@ -15,7 +15,7 @@
         const ERROR_GENERAL = 1;
         const ERROR_USER_ALREADY_EXIST = 2;
         const ERROR_DB = 3;      
-        const ERROR_REQUIRED_FIELD = 4;                         
+        const ERROR_REQUIRED_FIELD = 4;    
                         
         /**
          * @var UserData $userData
