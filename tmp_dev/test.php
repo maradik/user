@@ -1,8 +1,15 @@
 <?php
-    require_once __DIR__.'/../src/User.php';
+    require_once __DIR__.'/../src/UserData.php';
+    require_once __DIR__.'/../vendor/autoload.php';
     
-    use \Antools\UserRepository;
+    use \Maradik\User\UserData;
     
-    $ur = new UserRepository(new PDO("mysql:host=localhost;dbname=voprosnik;", "root", ""), "usertable2", "test2");
-    $ud = $ur->get(1, UserRepository::GET_BY_ID);   
+    $userData = new UserData();
+    //$userData->id = 1;
+    $userData->login = "kasdasd";
+    $userData->password= "adasd@#%$.3423";
+    $userData->email= "email@email.ru";    
+    print_r($userData->validate());
+    
+    var_dump($userData);
 ?>
