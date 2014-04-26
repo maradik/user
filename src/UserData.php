@@ -1,5 +1,6 @@
 <?php
     namespace Maradik\User; 
+    
     use Respect\Validation\Validator;
     
     /**
@@ -88,67 +89,60 @@
             $allFields = array_keys(get_object_vars($this));
             $args = is_array($fields) ? $fields : func_get_args();
                 
-            if (!empty($args) && sizeof(array_diff($args, $allFields))) {
+            if (!empty($args) && array_diff($args, $allFields)) {
                 throw new \InvalidArgumentException('Некорректные аргументы в методе ' . __METHOD__);
             }              
 
-            $fieldNames = empty($args)
-                ? $allFields
-                : array_intersect($args, $allFields);   
+            $fieldNames = empty($args) ? $allFields : $args;   
                     
             unset($allFields);
             unset($args);
             
             $v = array();
             
-            foreach ($fieldNames as $fieldName) {
-                switch ($fieldName) {
-                    case 'id':
-                        $v[] = Validator::attribute(
-                            $fieldName, 
-                            Validator::int()->min(0, true)
-                        )->setName($fieldName)
-                        ->setTemplate('ID должно быть целым числом не меньше 0.');
-                        break;                
-                    case 'login':
-                        $v[] = Validator::attribute(
-                            $fieldName, 
-                            Validator::alnum()->noWhitespace()->notEmpty()->length(1,20)
-                        )->setName($fieldName)
-                        ->setTemplate('Имя должно состоять из букв и цифр длиной не более 20 симв.');
-                        break;
-                    case 'email':
-                        $v[] = Validator::attribute(
-                            $fieldName, 
-                            Validator::email()->notEmpty()
-                        )->setName($fieldName)
-                        ->setTemplate('Некорректный формат e-mail.');
-                        break;     
-                    case 'password':
-                        $v[] = Validator::attribute(
-                            $fieldName, 
-                            Validator::notEmpty()->length(6,32)
-                        )->setName($fieldName)
-                        ->setTemplate('Пароль должен быть длиной от 6 до 32 символов.');
-                        break;     
-                    case 'role':
-                        $v[] = Validator::attribute(
-                            $fieldName, 
-                            Validator::int()->in(array(UserRoles::USER, UserRoles::MODERATOR, UserRoles::ADMIN))
-                        )->setName($fieldName)
-                        ->setTemplate('Недопустимое значение в поле Роль.');
-                        break;    
-                    case 'createDate':
-                        $v[] = Validator::attribute($fieldName, Validator::int()->min(0, true))
-                            ->setName($fieldName)
-                            ->setTemplate('Недопустимое значение в поле Дата создания.');
-                        break;   
-                    case 'loginDate':
-                        $v[] = Validator::attribute($fieldName, Validator::int()->min(0, true))
-                            ->setName($fieldName)
-                            ->setTemplate('Недопустимое значение в поле Дата входа.');
-                        break; 
-                }                
+            if (in_array($f = 'id', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::int()->min(0, true))
+                    ->setName($f)
+                    ->setTemplate('ID должно быть целым числом не меньше 0.');
+            }               
+            
+            if (in_array($f = 'login', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::alnum()->noWhitespace()->notEmpty()->length(1,20))
+                    ->setName($f)
+                    ->setTemplate('Имя должно состоять из латинских букв и цифр, длиной не более 20 симв.');
+            }
+            
+            if (in_array($f = 'email', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::email()->notEmpty())
+                    ->setName($f)
+                    ->setTemplate('Некорректный формат e-mail.');
+            }    
+            
+            if (in_array($f = 'password', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::notEmpty()->length(6,32))
+                    ->setName($f)
+                    ->setTemplate('Пароль должен быть длиной от 6 до 32 символов.');
+            }    
+            
+            if (in_array($f = 'role', $fieldNames)) {
+                $v[$f] = Validator::attribute(
+                    $f, 
+                    Validator::int()->in(array(UserRoles::USER, UserRoles::MODERATOR, UserRoles::ADMIN))
+                )
+                    ->setName($f)
+                    ->setTemplate('Недопустимое значение в поле Роль.');
+            }   
+            
+            if (in_array($f = 'createDate', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::int()->notEmpty()->min(0))
+                    ->setName($f)
+                    ->setTemplate('Недопустимое значение в поле Дата создания.');
+            }  
+            
+            if (in_array($f = 'loginDate', $fieldNames)) {
+                $v[$f] = Validator::attribute($f, Validator::int()->notEmpty()->min(0))
+                    ->setName($f)
+                    ->setTemplate('Недопустимое значение в поле Дата входа.');
             }
             
             try {
