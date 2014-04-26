@@ -135,7 +135,7 @@
         public function register(UserData $userData) {
             $this->setError(UserCurrent::ERROR_NONE);
             
-            $validateResult = $userData->validate();
+            $validateResult = $userData->validate('login', 'password', 'email');
             if ($validateResult === true) {            
                 $userData->password = $this->encryptPassword($userData->password);
                 $userData->session  = $this->userData->session;
