@@ -64,7 +64,7 @@
             $email      = "", 
             $session    = "", 
             $password   = "", 
-            $role       = UserRoles::USER, 
+            $role       = UserRoles::GUEST, 
             $createDate = 0, 
             $loginDate  = 0
         ) {
@@ -127,7 +127,12 @@
             if (in_array($f = 'role', $fieldNames)) {
                 $v[$f] = Validator::attribute(
                     $f, 
-                    Validator::int()->in(array(UserRoles::USER, UserRoles::MODERATOR, UserRoles::ADMIN))
+                    Validator::int()->in(array(
+                        UserRoles::GUEST, 
+                        UserRoles::USER, 
+                        UserRoles::MODERATOR, 
+                        UserRoles::ADMIN
+                    ))
                 )
                     ->setName($f)
                     ->setTemplate('Недопустимое значение в поле Роль.');

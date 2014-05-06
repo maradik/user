@@ -7,7 +7,8 @@
      */
     class UserRoles
     {
-        const USER      = 0;
-        const MODERATOR = 1;
-        const ADMIN     = 2;
+        const GUEST     = 0;
+        const USER      = 1;
+        const MODERATOR = 2;
+        const ADMIN     = 3;
     }

@@ -141,9 +141,11 @@
                 $userData->session  = $this->userData->session;
                 $userData->createDate = time();
                 $userData->loginDate = $userData->createDate;  
+                if ($userData->role == UserRoles::GUEST) {
+                    $userData->role = UserRoles::USER;    
+                }
                 if (empty($this->db->getByLogin($userData->login)->id) &&
                     empty($this->db->getByEmail($userData->email)->id)) {
-                        
                     if ($this->db->insert($userData)) {
                         $this->userData = $this->db->getByLogin($userData->login);
                         $this->setSessionCookie();
